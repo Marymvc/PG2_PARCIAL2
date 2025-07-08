@@ -17,6 +17,7 @@ def get_precio_total(self, obj):
     return builder.obtener_precio()
 ```
 
+
 ## 1. 🏭 Factory
 
     Código aplicado:
