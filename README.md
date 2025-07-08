@@ -48,13 +48,13 @@ def get_precio_total(self, obj):
 
     Código aplicado:
 
-Logger().registrar(f"Se registró el cálculo del precio del cono {obj.id}")
+    Logger().registrar(f"Se registró el cálculo del precio del cono {obj.id}")
 
-Descripción:
-El patrón Singleton asegura que Logger tenga una única instancia compartida en toda la aplicación para registrar eventos.
+    Descripción:
+    El patrón Singleton asegura que Logger tenga una única instancia compartida en toda la aplicación para registrar eventos.
 
-Ventaja:
-Evita múltiples instancias de logger, manteniendo centralizado el historial de acciones del sistema.
+    Ventaja:
+    Evita múltiples instancias de logger, manteniendo centralizado el historial de acciones del sistema.
 
 ## Administrador de Django y de la lista de registros en el endpoint de API REST
 
