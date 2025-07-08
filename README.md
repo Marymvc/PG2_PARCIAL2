@@ -7,50 +7,53 @@ Fecha: 8 de julio de 2025
 ## DESCRIPCION DE PATRONES
 ``` python
 def get_precio_total(self, obj):
-    # Patrón Factory
-    cafe = CafeFactory.obtener_base(obj.tipo_base)
+    base = ConoFactory.obtener_base(obj.variante)  # Factory
+    builder = ConoPersonalizadoBuilder(base)       # Builder
+    director = ConoDirector(builder)
+    director.construir(obj.toppings, obj.tamanio_cono)
 
-    # Patrón Builder
-    builder = CafePersonalizadoBuilder(cafe)
-    director = CafeDirector(builder)
-    director.construir(obj.ingredientes, obj.tamanio)
-
-    # Patrón Singleton
-    Logger().registrar(f"Se registró el calculo del precio para el pedido {obj.id}")
-    print(Logger().obtener_logs())
+    Logger().registrar(f"Se registró el cálculo del precio del cono {obj.id}")  # Singleton
 
     return builder.obtener_precio()
 ```
 
-## 1. 🏭 Factory — CafeFactory.obtener_base(obj.tipo_base)
-Propósito del patrón: Encapsular la creación de objetos, evitando el uso directo de Espresso(), Latte(), etc.
+## 1. 🏭 Factory
 
-Aplicación aquí:
-La línea:
+    Código aplicado:
 
-cafe = CafeFactory.obtener_base(obj.tipo_base)
-decide dinámicamente qué clase concreta de café (por ejemplo Espresso, Latte, Americano) instanciar según el tipo (tipo_base).
-Esto permite aislar la lógica de instanciación y facilita añadir nuevos tipos sin modificar este método.
+    base = ConoFactory.obtener_base(obj.variante)
 
-## 2. 🧱 Builder — CafePersonalizadoBuilder y CafeDirector
-Propósito del patrón: Separar la construcción de un objeto complejo de su representación.
+    Descripción:
+    El patrón Factory selecciona y devuelve una instancia de una clase hija concreta (Carnivoro, Vegetariano, Saludable) según el valor de variante.
 
-Aplicación aquí:
-Se usa un builder para armar el café personalizado paso a paso (ingredientes + tamaño), y un director que controla el orden y lógica de construcción:
+    Ventaja:
+    Encapsula la lógica de creación de objetos. Permite agregar más variantes fácilmente sin modificar el método.
 
-builder = CafePersonalizadoBuilder(cafe)
-director = CafeDirector(builder)
-director.construir(obj.ingredientes, obj.tamanio)
-Esto permite construir cafés personalizados con distintas combinaciones sin alterar la lógica central del objeto.
+## 2. 🧱 Builder
 
-## 3. 👤 Singleton — Logger
-Propósito del patrón: Asegurarse de que una clase tenga solo una instancia global, útil para logging, configuraciones, etc.
+    Código aplicado:
 
-Aplicación aquí:
+    builder = ConoPersonalizadoBuilder(base)
+    director = ConoDirector(builder)
+    director.construir(obj.toppings, obj.tamanio_cono)
 
-Logger().registrar(f"...")
-La clase Logger tiene una única instancia compartida para registrar logs. Esto asegura que todos los eventos se registren en un solo lugar sin importar cuántas veces se llame Logger().
+    Descripción:
+    El patrón Builder separa el proceso de construcción del objeto ConoPersonalizado, agregando toppings y ajustando el tamaño.
 
+    Ventaja:
+    Flexibilidad para construir conos personalizados sin modificar la lógica principal del programa.
+
+## 3. 👤 Singleton
+
+    Código aplicado:
+
+Logger().registrar(f"Se registró el cálculo del precio del cono {obj.id}")
+
+Descripción:
+El patrón Singleton asegura que Logger tenga una única instancia compartida en toda la aplicación para registrar eventos.
+
+Ventaja:
+Evita múltiples instancias de logger, manteniendo centralizado el historial de acciones del sistema.
 
 ## Administrador de Django y de la lista de registros en el endpoint de API REST
 
